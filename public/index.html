@@ -103,10 +103,9 @@
           </div>
 
           <div class="text-box">
-            <h1>Free</h1>
-            <p style = font-size:medium>
-              This app is free!!! And you are the only one holding your data!
-            </p>
+            <h1>Chart</h1>
+            <canvas id="myChart" width ="400" height=""400></canvas>
+           
           </div>
         </div>
       </div>
@@ -117,5 +116,49 @@
         <div class="center">All rights reserved &copy; Fabio Nolasco</div>
       </div>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.0/axios.min.js" integrity="sha512-aoTNnqZcT8B4AmeCFmiSnDlc4Nj/KPaZyB5G7JnOnUEkdNpCZs1LCankiYi01sLTyWy+m2P+W4XM+BuQ3Q4/Dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.min.js" integrity="sha512-7U4rRB8aGAHGVad3u2jiC7GA5/1YhQcQjxKeaVms/bT66i3LVBMRcBI9KwABNWnxOSwulkuSXxZLGuyfvo7V1A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <script>
+        var dataSource ={
+          datasets:[
+            {
+              data: [],
+              backgroundColor: [
+                '#ffcd56',
+                '#ff6384',
+                '#36a2eb',
+                '#fd6b19',
+              ],
+            }
+          ],
+          labels: [
+            
+          ]
+        };
+
+      function createChart(){
+        var ctx = document.getElementById("myChart").getContext("2d");
+        var myPieChart = new Chart(ctx, {
+          type: 'pie',
+          data: dataSource
+        });
+      
+      }
+      function getBudget(){
+        axios.get('/budget')
+        .then(function(res){
+          console.log(res);
+          for(var i = 0; i < res.data.myBudget.length; i++){
+            dataSource.datasets[0].data[i] = res.data.myBudget[i].budget;
+            dataSource.labels[i] = res.data.myBudget[i].title;
+          }
+          createChart();
+        });
+      }
+      getBudget();
+    
+    </script>
+
   </body>
 </html>
