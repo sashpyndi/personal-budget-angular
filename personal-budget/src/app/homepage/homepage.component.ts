@@ -2,6 +2,7 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Chart } from 'chart.js/auto';
 import * as d3 from 'd3';
+import { DataService } from '../data.service';
 @Component({
   selector: 'pb-homepage',
   templateUrl: './homepage.component.html',
@@ -25,7 +26,7 @@ export class HomepageComponent implements OnInit , AfterViewInit{
   // The radius of the pie chart is half the smallest side
   private radius = Math.min(this.width, this.height) / 2 - this.margin;
   private colors: any = [];
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, data:DataService) {}
   ngAfterViewInit(): void {
     this.http.get('http://localhost:3000/budget').subscribe((res: any) => {
 
